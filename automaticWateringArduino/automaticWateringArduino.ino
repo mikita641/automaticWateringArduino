@@ -28,8 +28,9 @@ struct multidata {
 multidata data[NBOARDS] {0};
 const char* master_host = "esp32master";
 const char* slave_host = "esp32slave";
-const char* SSID = "esp32asAP";
-const char* PASSWORD = "mysecurepassword";
+const char* SSID = "asus_18";
+const char* PASSWORD = "10146859";
+int status = WL_IDLE_STATUS;
 const uint16_t PORT = 49152;
 const unsigned int NUM = 0;
 const unsigned int NUMSLAVE = 1;
@@ -106,9 +107,14 @@ void wifiEsp32Master() {
 void wifiEsp32Slave() {
   data[NUMSLAVE].num = NUMSLAVE;
   Serial.print("Подключаем к WiFi");
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(100);
+  while ( status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to WEP network, SSID: ");
+    Serial.println(SSID);
+    Serial.println(status);
+    status = WiFi.begin(SSID, PASSWORD);
+
+    // wait 10 seconds for connection:
+    delay(10000);
   }
   Serial.println();
 
